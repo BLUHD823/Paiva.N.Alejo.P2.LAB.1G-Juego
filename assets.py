@@ -130,8 +130,7 @@ class Enemy(pygame.sprite.Sprite):
     def animate(self,display):
         direccion = None
         if self.orientation ==  'right':
-            direccion = self.sprites
-            
+            direccion = self.sprites  
         else:
             direccion = self.sprites_left
             

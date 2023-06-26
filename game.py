@@ -22,7 +22,7 @@ class Level_1:
         #plataformas
         self.tile_set = Piso((0,self.HEIGHT))
         self.obstaculo_1 = Obstaculo((self.WIDTH // 2, self.HEIGHT- 142),'.\src\obstacul0.png')
-        self.obstaculo_2 = Obstaculo((self.WIDTH - 843, self.HEIGHT- 202),'.\src\obstacul0.png')
+        self.obstaculo_2 = Obstaculo((self.WIDTH - 823, self.HEIGHT- 202),'.\src\obstacul0.png')
         self.plataforma = Obstaculo((self.WIDTH -1200, self.HEIGHT- 249),'.\src\plataforma god.png')
         
         self.enemy = Enemy(diccionario_enemigo_girado,diccionario_enemigo,self.plataforma.rect.midtop,2,self.plataforma.rect.topright,self.plataforma.rect.topleft)
@@ -33,7 +33,7 @@ class Level_1:
         self.enemies_sprites = pygame.sprite.Group()
         self.enemies_sprites.add(self.enemy)
 
-        self.is_playing = False
+        self.is_playing = True
         self.pressed = False #BANDERA SALTO
         
     def play(self):

@@ -36,14 +36,16 @@ def colision_enemy(player,enemies):
             if enemy.dead:
                 enemy.kill()
         else: 
-            enemy.status = 'attack'
-            if enemy.orientation == 'right':
-                player.rect.x += 100
+            if player.direccion == 'LEFT' and enemy.orientation == 'right':
+                enemy.status = 'attack'
+                player.rect.x += 130
                 player.direction.y = -12
-            else:
-                player.rect.x += -100
+                player.get_damage()
+            elif player.direccion == 'RIGHT' and enemy.orientation == 'left':
+                enemy.status = 'attack'
+                player.rect.x -= 130
                 player.direction.y = -12
-            player.get_damage()
+                player.get_damage()
             
                 
             
