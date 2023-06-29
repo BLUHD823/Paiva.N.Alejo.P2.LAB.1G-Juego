@@ -92,6 +92,23 @@ diccionario_enemigo_girado = {
           pygame.image.load("./sub zero/DEATH/20.png")]
 }
 
+coin = {
+    'animation' : [pygame.image.load("./golden_coin/0.png"),
+                pygame.image.load("./golden_coin/1.png"),
+                pygame.image.load("./golden_coin/2.png"),
+                pygame.image.load("./golden_coin/3.png")],
+}
+
+bigger_coin = {
+    'animation' : [pygame.image.load("./golden_coin/0.png"),
+                pygame.image.load("./golden_coin/1.png"),
+                pygame.image.load("./golden_coin/2.png"),
+                pygame.image.load("./golden_coin/3.png")],
+}
+
+
+
+
 def girar_imagenes(diccionario,flip_x,flip_y):
     
     for lista in diccionario.values():
@@ -99,13 +116,14 @@ def girar_imagenes(diccionario,flip_x,flip_y):
             lista[imagen] = pygame.transform.flip(lista[imagen],flip_x,flip_y)
 
 
-def reescalar_imagenes(diccionario):
+def reescalar_imagenes(diccionario,dimensiones):
     for lista in diccionario.values():
         for i in range(len(lista)):
-            lista[i] = pygame.transform.scale(lista[i],(80,103))
+            lista[i] = pygame.transform.scale(lista[i],dimensiones)
 
-reescalar_imagenes(diccionario)
-reescalar_imagenes(diccionario_girado)
+reescalar_imagenes(diccionario,(80,103))
+reescalar_imagenes(diccionario_girado,(80,103))
+reescalar_imagenes(bigger_coin,(30,30))
 
 girar_imagenes(diccionario_girado,True,False)
 girar_imagenes(diccionario_enemigo_girado,True,False)
@@ -114,5 +132,7 @@ menu ={
     'BG' : pygame.image.load('.\MENU\\FONDO.png'),
     'GAME_LEVELS' : pygame.image.load('./MENU/GAME LEVELS.png'),
     'OPTIONS' : pygame.image.load('./MENU/OPTIONS.png'),
-    'QUIT' : pygame.image.load('./MENU/QUIT.png')
+    'QUIT' : pygame.image.load('./MENU/QUIT.png'),
+    'TITULO' : pygame.image.load('./MENU/título level 1.png'),
+    'PORTADA_1' : pygame.image.load('./MENU/level_portada.png')
 }
