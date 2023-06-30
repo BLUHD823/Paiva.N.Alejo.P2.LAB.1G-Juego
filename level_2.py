@@ -30,9 +30,9 @@ class Level_2:
         self.resume = Options((self.WIDTH // 2, 303),pausa['RESUME'])
         self.close = Options((self.WIDTH // 2, 363),pausa['QUIT'])
         #UI
-        self.heart_1 = Life((35,735),'.\src\\heart.png')
-        self.heart_2 = Life((80,735),'.\src\\heart.png')
-        self.heart_3 = Life((125,735),'.\src\\heart.png')
+        self.heart_1 = Life((35,735),'.\src\\heart.png',(32,34))
+        self.heart_2 = Life((80,735),'.\src\\heart.png',(32,34))
+        self.heart_3 = Life((125,735),'.\src\\heart.png',(32,34))
         self.coin_1 = Coins((35,35),coin,bigger_coin,False)
         self.counter = Texto(self.font,(255,255,255),45,12)
         #Volumen

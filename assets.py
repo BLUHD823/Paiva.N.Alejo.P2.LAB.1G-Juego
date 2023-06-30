@@ -267,14 +267,15 @@ class Texto:
         display.blit(img,(self.x,self.y))
 
 class Life(pygame.sprite.Sprite):
-    def __init__(self,posicion,path) -> None:
+    def __init__(self,posicion,path,scale) -> None:
         super().__init__()
         self.image = pygame.image.load(path)
         self.rect = self.image.get_rect()
         self.rect.midbottom = posicion
         self.mask = pygame.mask.from_surface(self.image)
+        self.scale = scale
     def draw(self,display):
-        self.image = pygame.transform.scale(self.image,(32,34))
+        self.image = pygame.transform.scale(self.image,self.scale)#Tamaño
         display.blit(self.image,self.rect)
         
         
