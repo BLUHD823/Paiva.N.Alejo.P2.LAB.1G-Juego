@@ -26,7 +26,6 @@ def colision_h(player,group):
 def colision_enemy(player,enemies,health):
     
     enemy_collision = pygame.sprite.spritecollide(player,enemies,False,pygame.sprite.collide_mask)
-    
     for enemy in enemy_collision:
         if player.direction.y > 0 and player.rect.bottom < enemy.rect.centery:
             enemy.status = 'death'

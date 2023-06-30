@@ -39,103 +39,103 @@ diccionario_girado = {
 }
 
 diccionario_enemigo = {
-    'idle_animation' : [pygame.image.load("./sub zero/IDLE/0.png"),
-                pygame.image.load("./sub zero/IDLE/1.png"),
-                pygame.image.load("./sub zero/IDLE/2.png"),
-                pygame.image.load("./sub zero/IDLE/3.png"),
-                pygame.image.load("./sub zero/IDLE/4.png"),
-                pygame.image.load("./sub zero/IDLE/5.png"),
-                pygame.image.load("./sub zero/IDLE/6.png")],
+    'idle_animation' : [pygame.image.load("./enemies/IDLE/0.png"),
+                pygame.image.load("./enemies/IDLE/1.png"),
+                pygame.image.load("./enemies/IDLE/2.png"),
+                pygame.image.load("./enemies/IDLE/3.png"),
+                pygame.image.load("./enemies/IDLE/4.png"),
+                pygame.image.load("./enemies/IDLE/5.png"),
+                pygame.image.load("./enemies/IDLE/6.png")],
     
-    'walking_animation' :[pygame.image.load("./sub zero/WALKING/21.png"),
-                  pygame.image.load("./sub zero/WALKING/22.png"),
-                  pygame.image.load("./sub zero/WALKING/23.png"),
-                  pygame.image.load("./sub zero/WALKING/24.png"),
-                  pygame.image.load("./sub zero/WALKING/25.png"),
-                  pygame.image.load("./sub zero/WALKING/26.png")],
+    'walking_animation' :[pygame.image.load("./enemies/WALKING/21.png"),
+                  pygame.image.load("./enemies/WALKING/22.png"),
+                  pygame.image.load("./enemies/WALKING/23.png"),
+                  pygame.image.load("./enemies/WALKING/24.png"),
+                  pygame.image.load("./enemies/WALKING/25.png"),
+                  pygame.image.load("./enemies/WALKING/26.png")],
     
     'attack_animation' : [
-          pygame.image.load("./sub zero/ATTACK/0.png"),
-          pygame.image.load("./sub zero/ATTACK/1.png"),
-          pygame.image.load("./sub zero/ATTACK/2.png"),
-          pygame.image.load("./sub zero/ATTACK/3.png")],
+          pygame.image.load("./enemies/ATTACK/0.png"),
+          pygame.image.load("./enemies/ATTACK/1.png"),
+          pygame.image.load("./enemies/ATTACK/2.png"),
+          pygame.image.load("./enemies/ATTACK/3.png")],
     'death_animation' : [
-          pygame.image.load("./sub zero/DEATH/18.png"),
-          pygame.image.load("./sub zero/DEATH/19.png"),
-          pygame.image.load("./sub zero/DEATH/20.png")]
+          pygame.image.load("./enemies/DEATH/18.png"),
+          pygame.image.load("./enemies/DEATH/19.png"),
+          pygame.image.load("./enemies/DEATH/20.png")]
 }
 
 diccionario_enemigo_girado = {
-    'idle_animation' : [pygame.image.load("./sub zero/IDLE/0.png"),
-                pygame.image.load("./sub zero/IDLE/1.png"),
-                pygame.image.load("./sub zero/IDLE/2.png"),
-                pygame.image.load("./sub zero/IDLE/3.png"),
-                pygame.image.load("./sub zero/IDLE/4.png"),
-                pygame.image.load("./sub zero/IDLE/5.png"),
-                pygame.image.load("./sub zero/IDLE/6.png")],
+    'idle_animation' : [pygame.image.load("./enemies/IDLE/0.png"),
+                pygame.image.load("./enemies/IDLE/1.png"),
+                pygame.image.load("./enemies/IDLE/2.png"),
+                pygame.image.load("./enemies/IDLE/3.png"),
+                pygame.image.load("./enemies/IDLE/4.png"),
+                pygame.image.load("./enemies/IDLE/5.png"),
+                pygame.image.load("./enemies/IDLE/6.png")],
     
-    'walking_animation' :[pygame.image.load("./sub zero/WALKING/21.png"),
-                  pygame.image.load("./sub zero/WALKING/22.png"),
-                  pygame.image.load("./sub zero/WALKING/23.png"),
-                  pygame.image.load("./sub zero/WALKING/24.png"),
-                  pygame.image.load("./sub zero/WALKING/25.png"),
-                  pygame.image.load("./sub zero/WALKING/26.png")],
+    'walking_animation' :[pygame.image.load("./enemies/WALKING/21.png"),
+                  pygame.image.load("./enemies/WALKING/22.png"),
+                  pygame.image.load("./enemies/WALKING/23.png"),
+                  pygame.image.load("./enemies/WALKING/24.png"),
+                  pygame.image.load("./enemies/WALKING/25.png"),
+                  pygame.image.load("./enemies/WALKING/26.png")],
     
     'attack_animation' : [
-          pygame.image.load("./sub zero/ATTACK/0.png"),
-          pygame.image.load("./sub zero/ATTACK/1.png"),
-          pygame.image.load("./sub zero/ATTACK/2.png"),
-          pygame.image.load("./sub zero/ATTACK/3.png")],
+          pygame.image.load("./enemies/ATTACK/0.png"),
+          pygame.image.load("./enemies/ATTACK/1.png"),
+          pygame.image.load("./enemies/ATTACK/2.png"),
+          pygame.image.load("./enemies/ATTACK/3.png")],
     'death_animation' : [
-          pygame.image.load("./sub zero/DEATH/18.png"),
-          pygame.image.load("./sub zero/DEATH/19.png"),
-          pygame.image.load("./sub zero/DEATH/20.png")]
+          pygame.image.load("./enemies/DEATH/18.png"),
+          pygame.image.load("./enemies/DEATH/19.png"),
+          pygame.image.load("./enemies/DEATH/20.png")]
 }
 
 diccionario_cyrax = {
-    'walking_animation' :[pygame.image.load("./sub zero/CYRAX WALKING/0.png"),
-                  pygame.image.load("./sub zero/CYRAX WALKING/1.png"),
-                  pygame.image.load("./sub zero/CYRAX WALKING/2.png"),
-                  pygame.image.load("./sub zero/CYRAX WALKING/3.png"),
-                  pygame.image.load("./sub zero/CYRAX WALKING/4.png"),
-                  pygame.image.load("./sub zero/CYRAX WALKING/5.png"),
-                  pygame.image.load("./sub zero/CYRAX WALKING/6.png"),
-                  pygame.image.load("./sub zero/CYRAX WALKING/7.png")],
+    'walking_animation' :[pygame.image.load("./enemies/CYRAX WALKING/0.png"),
+                  pygame.image.load("./enemies/CYRAX WALKING/1.png"),
+                  pygame.image.load("./enemies/CYRAX WALKING/2.png"),
+                  pygame.image.load("./enemies/CYRAX WALKING/3.png"),
+                  pygame.image.load("./enemies/CYRAX WALKING/4.png"),
+                  pygame.image.load("./enemies/CYRAX WALKING/5.png"),
+                  pygame.image.load("./enemies/CYRAX WALKING/6.png"),
+                  pygame.image.load("./enemies/CYRAX WALKING/7.png")],
     
     'attack_animation' : [
-          pygame.image.load("./sub zero/CYRAX ATTACK/8.png"),
-          pygame.image.load("./sub zero/CYRAX ATTACK/9.png"),
-          pygame.image.load("./sub zero/CYRAX ATTACK/10.png")
+          pygame.image.load("./enemies/CYRAX ATTACK/8.png"),
+          pygame.image.load("./enemies/CYRAX ATTACK/9.png"),
+          pygame.image.load("./enemies/CYRAX ATTACK/10.png")
           ],
     'death_animation' : [
-          pygame.image.load("./sub zero/CYRAX DEATH/1.png"),
-          pygame.image.load("./sub zero/CYRAX DEATH/2.png"),
-          pygame.image.load("./sub zero/CYRAX DEATH/3.png"),
-          pygame.image.load("./sub zero/CYRAX DEATH/4.png"),
-          pygame.image.load("./sub zero/CYRAX DEATH/5.png")]
+          pygame.image.load("./enemies/CYRAX DEATH/1.png"),
+          pygame.image.load("./enemies/CYRAX DEATH/2.png"),
+          pygame.image.load("./enemies/CYRAX DEATH/3.png"),
+          pygame.image.load("./enemies/CYRAX DEATH/4.png"),
+          pygame.image.load("./enemies/CYRAX DEATH/5.png")]
 }
 
 diccionario_cyrax_girado = {
-    'walking_animation' :[pygame.image.load("./sub zero/CYRAX WALKING/0.png"),
-                  pygame.image.load("./sub zero/CYRAX WALKING/1.png"),
-                  pygame.image.load("./sub zero/CYRAX WALKING/2.png"),
-                  pygame.image.load("./sub zero/CYRAX WALKING/3.png"),
-                  pygame.image.load("./sub zero/CYRAX WALKING/4.png"),
-                  pygame.image.load("./sub zero/CYRAX WALKING/5.png"),
-                  pygame.image.load("./sub zero/CYRAX WALKING/6.png"),
-                  pygame.image.load("./sub zero/CYRAX WALKING/7.png")],
+    'walking_animation' :[pygame.image.load("./enemies/CYRAX WALKING/0.png"),
+                  pygame.image.load("./enemies/CYRAX WALKING/1.png"),
+                  pygame.image.load("./enemies/CYRAX WALKING/2.png"),
+                  pygame.image.load("./enemies/CYRAX WALKING/3.png"),
+                  pygame.image.load("./enemies/CYRAX WALKING/4.png"),
+                  pygame.image.load("./enemies/CYRAX WALKING/5.png"),
+                  pygame.image.load("./enemies/CYRAX WALKING/6.png"),
+                  pygame.image.load("./enemies/CYRAX WALKING/7.png")],
     
     'attack_animation' : [
-          pygame.image.load("./sub zero/CYRAX ATTACK/8.png"),
-          pygame.image.load("./sub zero/CYRAX ATTACK/9.png"),
-          pygame.image.load("./sub zero/CYRAX ATTACK/10.png")
+          pygame.image.load("./enemies/CYRAX ATTACK/8.png"),
+          pygame.image.load("./enemies/CYRAX ATTACK/9.png"),
+          pygame.image.load("./enemies/CYRAX ATTACK/10.png")
           ],
     'death_animation' : [
-          pygame.image.load("./sub zero/CYRAX DEATH/1.png"),
-          pygame.image.load("./sub zero/CYRAX DEATH/2.png"),
-          pygame.image.load("./sub zero/CYRAX DEATH/3.png"),
-          pygame.image.load("./sub zero/CYRAX DEATH/4.png"),
-          pygame.image.load("./sub zero/CYRAX DEATH/5.png")]
+          pygame.image.load("./enemies/CYRAX DEATH/1.png"),
+          pygame.image.load("./enemies/CYRAX DEATH/2.png"),
+          pygame.image.load("./enemies/CYRAX DEATH/3.png"),
+          pygame.image.load("./enemies/CYRAX DEATH/4.png"),
+          pygame.image.load("./enemies/CYRAX DEATH/5.png")]
 }
 
 coin = {

@@ -111,23 +111,6 @@ class Paleta(pygame.sprite.Sprite):
         self.rect.x += self.direction.x * 5
         self.invincibility_timer()
         
-class Nave(pygame.sprite.Sprite):
-    def __init__(self,path,velocity,posicion) -> None:
-        super().__init__()
-        self.surface = pygame.image.load(path)
-        self.rect = self.surface.get_rect()
-        self.rect.midbottom = posicion
-        self.velocity = velocity
-        self.direction = pygame.math.Vector2(0,0)
-    def move(self):
-        if self.rect.left > 0:
-            self.direction.x -= 1
-    
-    def update(self,display):
-        self.rect.x += self.direction.x * 5
-        self.rect.y += self.direction.y * 5
-        display.blit(self.surface,self.rect)    
-
 class Enemy(pygame.sprite.Sprite):
     def __init__(self,dict_l,dict_r,plataforma,velocity,orientacion) -> None:
         super().__init__()
@@ -252,20 +235,23 @@ class Options(pygame.sprite.Sprite):
         self.rect.midbottom = posicion
         self.mask = pygame.mask.from_surface(self.surface)
         self.clicked = False
+        self.click_allowed = True#bandera que desactiva el if inmediatamente después de efectuar el click
     def draw(self,display):
-        action =  False
+        display.blit(self.surface,self.rect)
         #sacar la posición del mouse
         pos = pygame.mouse.get_pos()
         #acciones del mouse
         if self.rect.collidepoint(pos):
-            if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
+            if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False and self.click_allowed:
+                self.click_allowed = False
                 self.clicked = True
-                action = True
+                print(self.clicked) 
             if pygame.mouse.get_pressed()[0] == 0:
+                self.click_allowed = True
                 self.clicked = False
-                action = False
-        display.blit(self.surface,self.rect)
-        return action
+                
+        
+        
     
 class Texto:
     def __init__(self,font,text_color,x,y) -> None:
