@@ -12,26 +12,33 @@ class Level_1:
         self.FPS = 60
         self.CENTER = (self.WIDTH // 2,self.HEIGHT // 2)
         self.LIFE = 3
-        
         pygame.init()
         #Texto
         self.contador = 0
         self.Font_size = 10
         self.font = pygame.font.SysFont("Pixeled Regular",self.Font_size)
-        
         #Window
         self.display = pygame.display.set_mode((self.WIDTH,self.HEIGHT))
-        pygame.display.set_caption("TOUHOU")
+        pygame.display.set_caption("Level 1")
         #Esenciales
         self.fondo = pygame.image.load('.\src\\atardecer}.png')
         self.player = Paleta((200,self.HEIGHT-100),5,diccionario,diccionario_girado,0.8,-16,self.LIFE)
         self.game_over_bg = pygame.image.load('.\src\\game over.png')
+        self.win_bg = pygame.image.load('src\\good end.png')
+        #botones pausa
+        self.paused = Options((self.WIDTH // 2, 323),pausa['GAME_PAUSED'])
+        self.resume = Options((self.WIDTH // 2, 403),pausa['RESUME'])
+        self.quit = Options((self.WIDTH // 2, 463),pausa['QUIT'])
         #UI
         self.heart_1 = Life((35,735),'.\src\\heart.png')
         self.heart_2 = Life((80,735),'.\src\\heart.png')
         self.heart_3 = Life((125,735),'.\src\\heart.png')
         self.coin_1 = Coins((35,35),coin,bigger_coin,False)
-        self.counter = Texto(self.font,(255,255,255),45,12) #draw_text(self.Text,self.font,(255,255,255),45,12,self.display)
+        self.counter = Texto(self.font,(255,255,255),45,12)
+        #Volumen
+        self.volumen_up = sonido['BLACK_UP'][0]
+        self.volumen_down = sonido['BLACK_DOWN'][0]
+        self.volumen_mute = sonido['BLACK_MUTE'][0]
         #plataformas
         self.tile_set = Piso((0,self.HEIGHT))
         self.obstaculo_1 = Obstaculo((816, 275),'.\src\obstacul0.png')
@@ -69,6 +76,7 @@ class Level_1:
         self.is_playing = True
         self.pressed = False #BANDERA SALTO
         self.game_over = False
+        self.complete_collection = False
         #replay estado
         self.replay = False
         
@@ -78,29 +86,49 @@ class Level_1:
             reloj = pygame.time.Clock()
             reloj.tick(self.FPS)
             self.handler_events()
-            if self.game_over == False and self.pause == False:
+            #el jugador no perdió y no apretó el botón de pausa
+            if self.game_over == False and self.pause == False and self.complete_collection == False:
                 self.update()
                 self.render()
-            elif self.pause == True:
+            #el jugador pausó el juego
+            elif self.pause:
+                self.paused.draw(self.display)
+                self.resume.draw(self.display)
+                self.quit.draw(self.display)
+                if self.quit.clicked:#QUIT
+                    self.is_playing = False
+                    self.quit.clicked = False
+                    self.replay = True
+                if self.resume.clicked:#RESUME GAME
+                    self.pause = False
+                    self.resume.clicked = False
                 self.render()
-            elif self.game_over == True:
+            #el jugador perdió
+            elif self.game_over:
                 self.display.blit(self.game_over_bg,(0,0))
                 self.render()
-
+            #el jugador ganó
+            if self.complete_collection:
+                self.display.blit(self.win_bg,(0,0))
+                self.render()
     def handler_events(self):
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT: #QUIT SERÍA LA X DE CERRAR
                 pygame.quit()
                 sys.exit()
             elif evento.type == pygame.KEYDOWN: # Evento de presionar una tecla
-                if evento.key == pygame.K_ESCAPE and self.pause == False: # Tecla "Esc" presionada
+                if evento.key == pygame.K_ESCAPE and self.pause == False: # Pausa Menu
+                    pygame.mixer.music.pause()#pausa la música
                     self.pause = True
-                elif evento.key == pygame.K_ESCAPE and self.pause == True:
+                elif evento.key == pygame.K_ESCAPE and self.pause == True:# Despausa
+                    pygame.mixer.music.unpause()#despausa la música
                     self.pause = False
-                elif evento.key == pygame.K_SPACE and self.game_over == True:
+                elif evento.key == pygame.K_SPACE and self.game_over == True:# Game Over
                     self.is_playing = False
                     self.replay = True
-                    print(self.is_playing)
+                elif evento.key == pygame.K_SPACE and self.complete_collection == True:# Win
+                    self.is_playing = False
+                    self.replay = True              
         
     def update(self):
         self.display.blit(self.fondo,(0,0))
@@ -124,33 +152,60 @@ class Level_1:
         colision_h(self.player,self.group_sprite)
         colision_enemy(self.player,self.enemies_sprites,self.current_health)
         collect_coins(self.player,self.collectible_coins,self.counter)
+        #Monedas totales coleccionadas:
+        if len(self.collectible_coins) == 0:
+            self.complete_collection = True
+        #Reproducir musica
         
-        # pygame.draw.rect(self.display, (255, 0, 0), self.coin_colleccionable_1, 2)
-
+        #Teclas
         keys_pressed = pygame.key.get_pressed()
+        #Movimiento a la izquierda
         if keys_pressed[pygame.K_a]: #left
             self.player.mover_x_izq()
+        #Movimiento a la derecha
         elif keys_pressed[pygame.K_d]: #right
                 self.player.mover_x_derecha(self.WIDTH)
         else:
             self.player.status = 'idle'
             self.player.direction.x = 0
+        #Salto
         if keys_pressed[pygame.K_SPACE]: #salto
             if self.pressed == False:
                 self.player.salto()
                 self.pressed = True
             if self.player.direction.y == 0:
                 self.pressed = False
+
+        if keys_pressed[pygame.K_UP] and pygame.mixer.music.get_volume() < 1.0: #Fecha para arriba
+            pygame.mixer.music.set_volume(pygame.mixer.music.get_volume() + 0.01)#Sube volumen
+            self.display.blit(self.volumen_up,(1100,50))
+        elif keys_pressed[pygame.K_DOWN] and pygame.mixer.music.get_volume() > 0.0: #Fecha para abajo
+            pygame.mixer.music.set_volume(pygame.mixer.music.get_volume() - 0.01)#Baja volumen
+            self.display.blit(self.volumen_down,(1100,50))
+        elif keys_pressed[pygame.K_m]:#Mutear con tecla m
+            pygame.mixer.music.set_volume(0.0)
+        if  pygame.mixer.music.get_volume() == 0.0: #En caso 0.0
+            self.display.blit(self.volumen_mute,(1100,50))#Mostrar icono de mute
+
+        #En caso de que el usurio pierda todas las vidas
         if self.player.life == 0:
             self.game_over = True
         # print(self.contador)
     def render(self):
         pygame.display.flip()
+    
     def reset(self):
         #estados reset
         self.is_playing = True
         self.pressed = False #BANDERA SALTO
         self.game_over = False
+        self.complete_collection = False
+        pygame.mixer.music.load('.\MUSIC\Melty Blood Type Lumina OST - _Actions in the Lower World.mp3')
+        pygame.mixer.music.play(-1)
+        pygame.mixer.music.set_volume(0.5)#Funciona de 0.0 a 1.0
+        self.volumen_up = sonido['BLACK_UP'][0]
+        self.volumen_down = sonido['BLACK_DOWN'][0]
+        self.volumen_mute = sonido['BLACK_MUTE'][0]
         #jugador y enemigos reset
         self.player = Paleta((200,self.HEIGHT-100),5,diccionario,diccionario_girado,0.8,-16,self.LIFE)
         self.enemy = Enemy(diccionario_enemigo_girado,diccionario_enemigo,self.plataforma_1.rect,2,'right')

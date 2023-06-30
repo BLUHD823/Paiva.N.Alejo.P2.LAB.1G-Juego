@@ -50,11 +50,15 @@ def colision_enemy(player,enemies,health):
 
 def collect_coins(player,coins,counter):
     coins_collision = pygame.sprite.spritecollide(player,coins,False,pygame.sprite.collide_mask)
-    
     for coin in coins_collision:
         coin.kill()
         counter.count += 1
         print(counter.count)
+
+
+    
+
+
 
         
         

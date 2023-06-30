@@ -5,30 +5,30 @@
 # gravedad_h = False
     
 # if gravedad_v:
-    #     if rect_p1.bottom <= HEIGHT:
-    #         rect_p1.y  += speed_y
+#         if rect_p1.bottom <= HEIGHT:
+#             rect_p1.y  += speed_y
             
                
-    #     else: 
-    #         player_1.fill(random_color(colores))
-    #         gravedad_v = not gravedad_v
-    # else:
-    #     if rect_p1.top >= 0:
-    #         rect_p1.y  -= speed_y  
-    #     else:
-    #         player_1.fill(random_color(colores))
-    #         gravedad_v = not gravedad_v
-    # if gravedad_h:
-    #     if rect_p1.right <= WIDTH:
+#         else: 
+#             player_1.fill(random_color(colores))
+#             gravedad_v = not gravedad_v
+#     else:
+#         if rect_p1.top >= 0:
+#             rect_p1.y  -= speed_y  
+#         else:
+#             player_1.fill(random_color(colores))
+#             gravedad_v = not gravedad_v
+#     if gravedad_h:
+#         if rect_p1.right <= WIDTH:
             
-    #         rect_p1.x  += speed_x
-    #     else: 
-    #         player_1.fill(random_color(colores))
-    #         gravedad_h = not gravedad_h
-    # else:
-    #     if rect_p1.left >= 0:
+#             rect_p1.x  += speed_x
+#         else: 
+#             player_1.fill(random_color(colores))
+#             gravedad_h = not gravedad_h
+#     else:
+#         if rect_p1.left >= 0:
             
-    #         rect_p1.x  -= speed_x
-    #     else:
-    #         player_1.fill(random_color(colores))
-    #         gravedad_h = not gravedad_h
+#             rect_p1.x  -= speed_x
+#         else:
+#             player_1.fill(random_color(colores))
+#             gravedad_h = not gravedad_h

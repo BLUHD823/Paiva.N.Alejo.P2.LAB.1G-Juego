@@ -4,7 +4,6 @@ from pygame.locals import *
 from pygame.sprite import Group
 
 class Paleta(pygame.sprite.Sprite):
-    
     def __init__(self, posicion,velocidad,diccionario,diccionario_girado,gravedad,salto_distancia,life) -> None:
         super().__init__()
         #sprites
@@ -27,12 +26,12 @@ class Paleta(pygame.sprite.Sprite):
         self.animation_speed = 0.15
         #estado muerte y vida
         self.invincible = False
-        self.invincibility_duration = 400
+        self.invincibility_duration = 600
         self.hurt_time = 0
         self.life = life
-
     def status_animation(self,display):
         direccion = None
+        #estados dependiendo de direcciones
         if self.direccion == 'RIGHT':
             direccion = self.sprit
         elif self.direccion == 'LEFT':
@@ -43,37 +42,40 @@ class Paleta(pygame.sprite.Sprite):
             self.status = 'jumping'
         if self.life <= 0:
             self.status = 'death'
-
+        #animación idle
         if self.status == 'idle':
             self.frame_index += self.animation_speed
             if self.frame_index >= len(direccion['idle_animation']):
                 self.frame_index = 0
             self.image = direccion['idle_animation'][int(self.frame_index)]
             display.blit( self.image,self.rect)
+        #animación caminata
         if self.status == 'walking':
             self.frame_index += self.animation_speed
             if self.frame_index >= len(direccion['walking_animation']):
                 self.frame_index = 0
             self.image = direccion['walking_animation'][int(self.frame_index)]
             display.blit( self.image,self.rect)
+        #animación salto
         if self.status == 'jumping':
             self.frame_index += self.animation_speed
             if self.frame_index >= len(direccion['jumping_animation']):
                 self.frame_index = 0
             self.image = direccion['jumping_animation'][int(self.frame_index)]
             display.blit( self.image,self.rect)
+        #animación caída
         if self.status == 'falling':
             self.frame_index += self.animation_speed
             if self.frame_index >= len(direccion['falling_animation']):
                 self.frame_index = 0
             self.image = direccion['falling_animation'][int(self.frame_index)]
             display.blit( self.image,self.rect)
+    #Movimiento
     def mover_x_izq(self):
         self.direccion = "LEFT"
         self.status = "walking"
         if self.rect.left > 0:
             self.direction.x = -1  
-            self.posicion = self.rect.midbottom
         else:
             self.rect.left = 0   
     def mover_x_derecha(self,WIDTH):
@@ -81,39 +83,57 @@ class Paleta(pygame.sprite.Sprite):
         self.status = "walking"
         if self.rect.right < WIDTH:
             self.direction.x = 1        
-            self.posicion = self.rect.midbottom
         else:
-            self.rect.right = WIDTH   
+            self.rect.right = WIDTH 
+    #gravedad  
     def apply_gravity(self):
         self.direction.y += self.gravity
         self.rect.y += self.direction.y
         self.rect.y += self.gravity
+    #salto
     def salto(self):
         self.direction.y = self.jump_speed
+    #Ser dañado
     def get_damage(self):
         if  self.invincible == False:
             self.invincible = True
-            self.hurt_time = pygame.time.get_ticks()
+            self.hurt_time = pygame.time.get_ticks()#tiempo en milisegundos
             self.life -= 1
+    #Hace que el jugador no sea dañado por cierto tiempo
     def invincibility_timer(self):
         if self.invincible:
             current_time = pygame.time.get_ticks()
             if current_time - self.hurt_time >= self.invincibility_duration:
                 self.invincible = False
-    def draw(self,display):
-        self.status_animation(display)
+    #actualiza los sprites
     def update(self,display):
-        self.draw(display)
+        self.status_animation(display)
         self.rect.x += self.direction.x * 5
         self.invincibility_timer()
         
+class Nave(pygame.sprite.Sprite):
+    def __init__(self,path,velocity,posicion) -> None:
+        super().__init__()
+        self.surface = pygame.image.load(path)
+        self.rect = self.surface.get_rect()
+        self.rect.midbottom = posicion
+        self.velocity = velocity
+        self.direction = pygame.math.Vector2(0,0)
+    def move(self):
+        if self.rect.left > 0:
+            self.direction.x -= 1
+    
+    def update(self,display):
+        self.rect.x += self.direction.x * 5
+        self.rect.y += self.direction.y * 5
+        display.blit(self.surface,self.rect)    
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self,dict_l,dict_r,plataforma,velocity,orientacion) -> None:
         super().__init__()
         self.sprites = dict_r
         self.sprites_left = dict_l
-        self.surface = self.sprites['idle_animation'][0]
+        self.surface = self.sprites['walking_animation'][0]
         self.rect = self.surface.get_rect()
         self.rect.midbottom = plataforma.midtop
         self.position = plataforma.midtop
@@ -156,7 +176,6 @@ class Enemy(pygame.sprite.Sprite):
                 self.velocity = self.old_velocity
             self.surface = direccion['attack_animation'][int(self.frame_index)]
             display.blit( self.surface,self.rect)    
-
     def move(self):
         if self.orientation == 'right':
             self.rect.x += self.velocity
