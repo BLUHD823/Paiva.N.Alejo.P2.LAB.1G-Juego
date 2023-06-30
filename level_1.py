@@ -22,7 +22,7 @@ class Level_1:
         pygame.display.set_caption("Level 1")
         #Esenciales
         self.fondo = pygame.image.load('.\src\\atardecer}.png')
-        self.player = Paleta((200,self.HEIGHT-100),5,diccionario,diccionario_girado,0.8,-16,self.LIFE)
+        self.player = Player((200,self.HEIGHT-100),5,diccionario,diccionario_girado,0.8,-16,self.LIFE)
         self.game_over_bg = pygame.image.load('.\src\\game over.png')
         self.win_bg = pygame.image.load('src\\good end.png')
         #botones pausa
@@ -142,6 +142,7 @@ class Level_1:
         #vida actual
         for corazon in self.current_health:
             corazon.draw(self.display)
+        #Monedas
         self.coin_1.draw(self.display)
         for moneda in self.collectible_coins:
             moneda.draw(self.display)
@@ -163,7 +164,7 @@ class Level_1:
         #Movimiento a la derecha
         elif keys_pressed[pygame.K_d]: #right
                 self.player.mover_x_derecha(self.WIDTH)
-        else:
+        else:#En caso contrario, quieto
             self.player.status = 'idle'
             self.player.direction.x = 0
         #Salto
@@ -171,9 +172,9 @@ class Level_1:
             if self.pressed == False:
                 self.player.salto()
                 self.pressed = True
-            if self.player.direction.y == 0:
+            if self.player.direction.y == 0:#cuando está sobre una superficie
                 self.pressed = False
-
+        #Botones para subir y bajar el volumen
         if keys_pressed[pygame.K_UP] and pygame.mixer.music.get_volume() < 1.0: #Fecha para arriba
             pygame.mixer.music.set_volume(pygame.mixer.music.get_volume() + 0.01)#Sube volumen
             self.display.blit(self.volumen_up,(1100,50))
@@ -184,15 +185,12 @@ class Level_1:
             pygame.mixer.music.set_volume(0.0)
         if  pygame.mixer.music.get_volume() == 0.0: #En caso 0.0
             self.display.blit(self.volumen_mute,(1100,50))#Mostrar icono de mute
-
         #En caso de que el usurio pierda todas las vidas
         if self.player.life == 0:
             self.game_over = True
-        # print(self.contador)
     def render(self):
         pygame.display.flip()
-    
-    def reset(self):
+    def reset(self):#Función que resetea variables
         #estados reset
         self.is_playing = True
         self.pressed = False #BANDERA SALTO
@@ -205,12 +203,12 @@ class Level_1:
         self.volumen_down = sonido['BLACK_DOWN'][0]
         self.volumen_mute = sonido['BLACK_MUTE'][0]
         #jugador y enemigos reset
-        self.player = Paleta((200,self.HEIGHT-100),5,diccionario,diccionario_girado,0.8,-16,self.LIFE)
+        self.player = Player((200,self.HEIGHT-100),5,diccionario,diccionario_girado,0.8,-16,self.LIFE)
         self.enemy = Enemy(diccionario_enemigo_girado,diccionario_enemigo,self.plataforma_1.rect,2,'right')
         self.enemy_2 = Enemy(diccionario_enemigo_girado,diccionario_enemigo,self.plataforma_2.rect,2,'left')
         self.enemy_3 = Enemy(diccionario_enemigo_girado,diccionario_enemigo,self.plataforma_3.rect,2,'right')
         self.enemy_4 = Enemy(diccionario_enemigo_girado,diccionario_enemigo,self.obstaculo_4.rect,1,'right')
-        self.counter = Texto(self.font,(255,255,255),45,12)
+        self.counter = Texto(self.font,(255,255,255),45,12)#Texto self
         #grupos reset
         self.enemies_sprites.empty()
         self.enemies_sprites.add(self.enemy,self.enemy_2,self.enemy_3,self.enemy_4)

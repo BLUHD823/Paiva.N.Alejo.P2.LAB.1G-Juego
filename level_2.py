@@ -12,7 +12,6 @@ class Level_2:
         self.FPS = 60
         self.CENTER = (self.WIDTH // 2,self.HEIGHT // 2)
         self.LIFE = 3
-        
         pygame.init()
         #Texto
         self.contador = 0
@@ -23,7 +22,7 @@ class Level_2:
         pygame.display.set_caption("Level 2")
         #Esenciales
         self.fondo = pygame.image.load('.\src\\DEATH BG.png')
-        self.player = Paleta((200,self.HEIGHT-100),5,diccionario,diccionario_girado,0.8,-16,self.LIFE)
+        self.player = Player((200,self.HEIGHT-100),5,diccionario,diccionario_girado,0.8,-16,self.LIFE)
         self.game_over_bg = pygame.image.load('.\src\\game over.png')
         self.win_bg = pygame.image.load('src\\good end.png')
         #botones
@@ -84,37 +83,39 @@ class Level_2:
         self.complete_collection = False
         #replay estado
         self.replay = False
-        
     def play(self):
         self.pause = False
         while self.is_playing:
             reloj = pygame.time.Clock()
             reloj.tick(self.FPS)
             self.handler_events()
+            #el jugador no perdió y no apretó el botón de pausa
             if self.game_over == False and self.pause == False and self.complete_collection == False:
                 self.update()
                 self.render()
+            #el jugador pausó el juego
             elif self.pause == True:#Menu pausa
                 self.paused.draw(self.display)
                 self.resume.draw(self.display)
                 self.close.draw(self.display)
-                if self.close.clicked and self.complete_collection == False:#Boton close en pausa
+                if self.close.clicked:#QUIT
                     pygame.mixer.music.stop()
                     self.is_playing = False
                     self.replay = True
                     self.close.clicked = False
-                if self.resume.clicked:#Boton resume
+                if self.resume.clicked:#RESUME GAME
                     pygame.mixer.music.unpause()#despausa la música
                     self.pause = False
                     self.resume.clicked = False
                 self.render()
+            #el jugador perdió
             elif self.game_over:
                 self.display.blit(self.game_over_bg,(0,0))
                 self.render()
+            #el jugador ganó
             elif self.complete_collection:
                 self.display.blit(self.win_bg,(0,0))
                 self.render()
-         
     def handler_events(self):
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT: #QUIT SERÍA LA X DE CERRAR
@@ -130,12 +131,9 @@ class Level_2:
                 elif evento.key == pygame.K_SPACE and self.game_over == True:# Game Over
                     self.replay = True
                     self.is_playing = False
-                    
                 elif evento.key == pygame.K_SPACE and self.complete_collection == True:# Win
                     self.replay = True  
-                    self.is_playing = False
-                    
-                     
+                    self.is_playing = False             
     def update(self):
         self.display.blit(self.fondo,(0,0))
         #terrenos
@@ -148,6 +146,7 @@ class Level_2:
         #vida actual
         for corazon in self.current_health:
             corazon.draw(self.display)
+        #Monedas
         self.coin_1.draw(self.display)
         for moneda in self.collectible_coins:
             moneda.draw(self.display)
@@ -170,17 +169,19 @@ class Level_2:
             self.player.mover_x_izq()
         elif keys_pressed[pygame.K_d]: #right
                 self.player.mover_x_derecha(self.WIDTH)
-        else:
+        else:#En caso contrario, quieto
             self.player.status = 'idle'
             self.player.direction.x = 0
         if keys_pressed[pygame.K_SPACE]: #salto
             if self.pressed == False:
                 self.player.salto()
                 self.pressed = True
-            if self.player.direction.y == 0:
+            if self.player.direction.y == 0:#cuando está sobre una superficie
                 self.pressed = False
+        #En caso de que el usurio pierda todas las vidas
         if self.player.life == 0:
             self.game_over = True
+        #Botones para subir y bajar el volumen
         if keys_pressed[pygame.K_UP] and pygame.mixer.music.get_volume() < 1.0: #Fecha para arriba
             pygame.mixer.music.set_volume(pygame.mixer.music.get_volume() + 0.01)#Sube volumen
             self.display.blit(self.volumen_up,(1100,50))
@@ -206,7 +207,7 @@ class Level_2:
         pygame.mixer.music.play(-1)
         pygame.mixer.music.set_volume(0.5)#Funciona de 0.0 a 1.0    
         #jugador y enemigos reset
-        self.player = Paleta((200,self.HEIGHT-100),5,diccionario,diccionario_girado,0.8,-16,self.LIFE)
+        self.player = Player((200,self.HEIGHT-100),5,diccionario,diccionario_girado,0.8,-16,self.LIFE)
         self.enemy = Enemy(diccionario_cyrax_girado,diccionario_cyrax,self.plataforma_1.rect,2,'right')
         self.enemy_2 = Enemy(diccionario_cyrax_girado,diccionario_cyrax,self.plataforma_2.rect,2,'left')
         self.enemy_3 = Enemy(diccionario_cyrax_girado,diccionario_cyrax,self.plataforma_3.rect,1,'right')
@@ -214,8 +215,6 @@ class Level_2:
         self.enemy_5 = Enemy(diccionario_cyrax_girado,diccionario_cyrax,self.plataforma_3.rect,1,'left')
         self.counter = Texto(self.font,(255,255,255),45,12) #draw_text(self.Text,self.font,(255,255,255),45,12,self.display)
         #grupos reset
-        self.group_sprite.empty()
-        self.group_sprite.add(self.piso,self.obstaculo_1,self.obstaculo_2,self.plataforma_1,self.obstaculo_3,self.plataforma_2,self.plataforma_3,self.obstaculo_4)
         self.enemies_sprites.empty()
         self.enemies_sprites.add(self.enemy,self.enemy_2,self.enemy_3,self.enemy_4,self.enemy_5)
         self.current_health.empty()

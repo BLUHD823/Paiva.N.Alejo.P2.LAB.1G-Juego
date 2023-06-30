@@ -3,7 +3,7 @@ import pygame, sys
 from pygame.locals import *
 from pygame.sprite import Group
 
-class Paleta(pygame.sprite.Sprite):
+class Player(pygame.sprite.Sprite):
     def __init__(self, posicion,velocidad,diccionario,diccionario_girado,gravedad,salto_distancia,life) -> None:
         super().__init__()
         #sprites
@@ -15,10 +15,10 @@ class Paleta(pygame.sprite.Sprite):
         self.rect.midbottom = posicion
         self.mask = pygame.mask.from_surface(self.image)
         #movimiento
-        self.direction = pygame.math.Vector2(0,0)
-        self.velocidad_x = velocidad
-        self.gravity = gravedad
-        self.jump_speed = salto_distancia
+        self.direction = pygame.math.Vector2(0,0)#Vector que me permite ver la dirección
+        self.velocidad_x = velocidad#Velocidad de movimientos
+        self.gravity = gravedad#Cantidad de gravedad
+        self.jump_speed = salto_distancia#Distancia de Salto
         self.direccion = 'RIGHT'
         self.status = 'idle'
         #animacion
@@ -26,16 +26,17 @@ class Paleta(pygame.sprite.Sprite):
         self.animation_speed = 0.15
         #estado muerte y vida
         self.invincible = False
-        self.invincibility_duration = 600
-        self.hurt_time = 0
+        self.invincibility_duration = 600#Duranción de la inmortalidad#
+        self.hurt_time = 0#Contador del tiempo después de recibir daño
         self.life = life
     def status_animation(self,display):
         direccion = None
-        #estados dependiendo de direcciones
+        #Diccionarios de sprites, dependiendo la dirección
         if self.direccion == 'RIGHT':
             direccion = self.sprit
         elif self.direccion == 'LEFT':
             direccion = self.sprit_girado
+        #Estados
         if self.direction.y > 0:
             self.status = 'falling'
         if self.direction.y < 0:
@@ -44,7 +45,7 @@ class Paleta(pygame.sprite.Sprite):
             self.status = 'death'
         #animación idle
         if self.status == 'idle':
-            self.frame_index += self.animation_speed
+            self.frame_index += self.animation_speed#velocidad de animación
             if self.frame_index >= len(direccion['idle_animation']):
                 self.frame_index = 0
             self.image = direccion['idle_animation'][int(self.frame_index)]
@@ -70,7 +71,7 @@ class Paleta(pygame.sprite.Sprite):
                 self.frame_index = 0
             self.image = direccion['falling_animation'][int(self.frame_index)]
             display.blit( self.image,self.rect)
-    #Movimiento
+    #Movimiento izquierda
     def mover_x_izq(self):
         self.direccion = "LEFT"
         self.status = "walking"
@@ -78,6 +79,7 @@ class Paleta(pygame.sprite.Sprite):
             self.direction.x = -1  
         else:
             self.rect.left = 0   
+    #Movimiento derecha
     def mover_x_derecha(self,WIDTH):
         self.direccion = "RIGHT"
         self.status = "walking"
@@ -89,7 +91,6 @@ class Paleta(pygame.sprite.Sprite):
     def apply_gravity(self):
         self.direction.y += self.gravity
         self.rect.y += self.direction.y
-        self.rect.y += self.gravity
     #salto
     def salto(self):
         self.direction.y = self.jump_speed
@@ -98,52 +99,59 @@ class Paleta(pygame.sprite.Sprite):
         if  self.invincible == False:
             self.invincible = True
             self.hurt_time = pygame.time.get_ticks()#tiempo en milisegundos
-            self.life -= 1
+            self.life -= 1#pierde una vida al ser atacado
     #Hace que el jugador no sea dañado por cierto tiempo
     def invincibility_timer(self):
         if self.invincible:
             current_time = pygame.time.get_ticks()
-            if current_time - self.hurt_time >= self.invincibility_duration:
+            if current_time - self.hurt_time >= self.invincibility_duration:#
                 self.invincible = False
     #actualiza los sprites
     def update(self,display):
         self.status_animation(display)
-        self.rect.x += self.direction.x * 5
+        self.rect.x += self.direction.x * self.velocidad_x
         self.invincibility_timer()
         
 class Enemy(pygame.sprite.Sprite):
     def __init__(self,dict_l,dict_r,plataforma,velocity,orientacion) -> None:
         super().__init__()
+        #sprites
         self.sprites = dict_r
         self.sprites_left = dict_l
+        #definir superficie y mascara
         self.surface = self.sprites['walking_animation'][0]
         self.rect = self.surface.get_rect()
         self.rect.midbottom = plataforma.midtop
         self.position = plataforma.midtop
         self.mask = pygame.mask.from_surface(self.surface)
+        #movimiento
         self.direction = pygame.math.Vector2(0,0)
-        self.velocity = velocity
-        self.old_velocity = velocity
+        self.velocity = velocity#velocidad
+        self.old_velocity = velocity#variable con la velocidad inicial
         self.status = 'walking'
+        #animacion
         self.frame_index = 0
         self.animation_speed = 0.15
         self.right_limit = plataforma.topright[0]
         self.left_limit = plataforma.topleft[0]
         self.orientation = orientacion
         self.dead = False
-
     def animate(self,display):
+        #Orientación
         direccion = None
         if self.orientation ==  'right':
             direccion = self.sprites  
         elif self.orientation == 'left':
             direccion = self.sprites_left
+        #Estados de animación
+        #caminata
         if self.status == 'walking':
             self.frame_index += self.animation_speed
             if self.frame_index >= len(direccion['walking_animation']):
                     self.frame_index = 0
             self.surface = direccion['walking_animation'][int(self.frame_index)]
             display.blit( self.surface,self.rect)
+        #muerte
         if self.status == 'death':
             self.frame_index += self.animation_speed
             if self.frame_index >= len(direccion['death_animation']):
@@ -151,6 +159,7 @@ class Enemy(pygame.sprite.Sprite):
                 self.dead  = True
             self.surface = direccion['death_animation'][int(self.frame_index)]
             display.blit( self.surface,self.rect)
+        #ataque
         if self.status == 'attack':
             self.frame_index += self.animation_speed
             if self.frame_index >= len(direccion['attack_animation']):
@@ -158,7 +167,8 @@ class Enemy(pygame.sprite.Sprite):
                 self.dead = False
                 self.velocity = self.old_velocity
             self.surface = direccion['attack_animation'][int(self.frame_index)]
-            display.blit( self.surface,self.rect)    
+            display.blit( self.surface,self.rect) 
+    #Movimiento   
     def move(self):
         if self.orientation == 'right':
             self.rect.x += self.velocity
@@ -170,14 +180,15 @@ class Enemy(pygame.sprite.Sprite):
         if self.rect.left <= self.left_limit:
             self.orientation = 'right'
             self.status = 'walking'
+    #Actualización
     def update(self,display):
         self.move()
         self.animate(display)
 
-
 class Coins(pygame.sprite.Sprite):
     def __init__(self, posicion,dict,bigger_dict,bool) -> None:
         super().__init__()
+        #Sprites y superficie
         self.sprites = dict
         self.bigger_sprites = bigger_dict
         self.surface = self.sprites['animation'][0]
@@ -185,10 +196,11 @@ class Coins(pygame.sprite.Sprite):
         self.position = posicion
         self.rect.midbottom = self.position
         self.mask = pygame.mask.from_surface(self.surface)
+        #Animación
         self.frame_index = 0
         self.animation_speed = 0.15
+        #Tamaño de sprites
         self.tamaño = bool
-        self.contador = 0
     def animate(self):
         if self.tamaño == True:
             diccionario = self.bigger_sprites
@@ -215,18 +227,7 @@ class Obstaculo(pygame.sprite.Sprite):
     def draw(self,display):
         display.blit(self.surface, self.rect)
     
-class Piso(pygame.sprite.Sprite):
-    def __init__(self,posicion) -> None:
-        super().__init__()
-        self.surface = pygame.image.load('./src/tile definitivo.png')
-        self.rect = self.surface.get_rect()
-        self.rect.bottomleft = posicion
-        self.mask = pygame.mask.from_surface(self.surface)
-        self.posicion = posicion
-    def draw(self,display):
-        display.blit(self.surface, self.rect)
     
-
 class Options(pygame.sprite.Sprite):
     def __init__(self,posicion,path) -> None:
         super().__init__()
@@ -249,19 +250,18 @@ class Options(pygame.sprite.Sprite):
             if pygame.mouse.get_pressed()[0] == 0:
                 self.click_allowed = True
                 self.clicked = False
-                
-        
-        
-    
+
 class Texto:
     def __init__(self,font,text_color,x,y) -> None:
         self.count = 0
-        self.text = (f"X {self.count}")
-        self.text_font = font 
-        self.color = text_color
+        self.text = (f"X {self.count}")#Impresión del contador
+        self.text_font = font#Fuente de texto
+        self.color = text_color#Color
+        #Posición
         self.x = x
         self.y = y
     def draw_text(self,display):
+        #Actualización
         self.text = (f"X {self.count}")
         img = self.text_font.render(self.text,True,self.color)
         display.blit(img,(self.x,self.y))
