@@ -3,7 +3,7 @@
 ![image](https://github.com/user-attachments/assets/8da8037a-f2d8-453b-b64a-cbf9c30071b1)
 
 ## Installation
-You will only need to install pygame
+You will only need to install **Pygame**:
 ```bash
 pip install pygame
 ```
